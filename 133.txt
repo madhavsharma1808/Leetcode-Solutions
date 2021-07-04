@@ -1,0 +1,25 @@
+class Solution {
+public:
+    
+    Node* createnewnode(Node* node,map<int,Node*>& umap)
+    {
+        if(umap.find(node->val) != umap.end())
+            return umap[node->val];
+         Node* newnode=new Node();
+        newnode->val=node->val;
+        umap[newnode->val]=newnode;
+        for(auto x: node->neighbors)
+        {
+                 newnode->neighbors.push_back(createnewnode(x,umap));
+        }
+        return newnode;
+    }
+    
+    
+    Node* cloneGraph(Node* node) {
+        if(node==NULL)
+            return NULL;
+       map<int,Node*> umap;
+        return createnewnode(node,umap);
+    }
+};

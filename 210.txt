@@ -1,0 +1,65 @@
+class Solution {
+public:
+    
+    bool dfs(int cur,vector<vector<int>>& vec,vector<int>& visited)
+    {
+        if(visited[cur]==2)
+            return true;
+        visited[cur]=2;
+        for(int i=0;i<vec[cur].size();i++)
+        {
+            if(visited[vec[cur][i]]!=1)
+                if(dfs(vec[cur][i],vec,visited))
+                   return true;
+        }
+       
+        visited[cur]=1;
+        return false;
+    }
+                   
+    void dfs2(int cur,vector<vector<int>>& vec,vector<int>& visited,stack<int>& st)
+    {
+        
+     
+        visited[cur]=1;
+        for(int i=0;i<vec[cur].size();i++)
+        {
+            if(visited[vec[cur][i]]==0)
+                dfs2(vec[cur][i],vec,visited,st);
+        }
+         
+            st.push(cur);
+    }
+    
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> visited(numCourses,0);
+        vector<vector<int>> vec(numCourses);
+        for(int i=0;i<prerequisites.size();i++)
+        {
+            vec[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        vector<int> ans;
+        for(int i=0;i<numCourses;i++)
+        {
+            if(visited[i]==0)
+                if(dfs(i,vec,visited))
+                    return ans;
+        }
+        vector<int> visited2(numCourses,0);
+        stack<int> st;
+        for(int i=0;i<numCourses;i++)
+        {
+            if(visited2[i]==0)
+                dfs2(i,vec,visited2,st);
+        }
+       
+        int n=st.size();
+        for(int i=0;i<n;i++)
+        {
+            
+            ans.push_back(st.top());
+            st.pop();
+        }
+        return ans; 
+    }
+};

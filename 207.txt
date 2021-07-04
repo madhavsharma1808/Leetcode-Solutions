@@ -1,0 +1,36 @@
+class Solution {
+public:
+    
+    bool dfs(vector<vector<int>>& vec,vector<int>& check,int cur)
+    {
+        if(check[cur]==2)
+            return true;
+        check[cur]=2;
+        for(int i=0;i<vec[cur].size();i++)
+        {
+            if(check[vec[cur][i]]!=1)
+                if(dfs(vec,check,vec[cur][i]))
+                    return true;
+        }
+        check[cur]=1;
+        return false;
+    }
+    
+    
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> vec(numCourses);
+        vector<int> check(numCourses,0);
+        for(int i=0;i<prerequisites.size();i++)
+        {
+            
+            vec[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        for(int i=0;i<numCourses;i++)
+        {
+            if(check[i]==0)
+                if(dfs(vec,check,i))
+                    return false;
+        }
+        return true;
+    }
+};
